@@ -15,4 +15,4 @@ langchain-text-splitters
 faiss-cpu
 
 prance
-swagger-spec-validator
+openapi-spec-validator
