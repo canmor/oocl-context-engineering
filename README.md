@@ -23,13 +23,13 @@ pip install -r requirements.txt
 
 Edit the `.env` file to set your OpenAI API credentials and model preferences.
 
-`OPENAI_API_BASE`: Your OpenAI API base URL.  
-`OPENAI_API_KEY`: Your OpenAI API key.
+- `OPENAI_API_BASE`: Your OpenAI API base URL.  
+- `OPENAI_API_KEY`: Your OpenAI API key.
 
 And please check following model name are matched to your privider:
 
-`EMBEDDING_MODEL`: typically 'text-embedding-3-small' with no prefix.
-`LLM_MODEL`: typically 'gpt-4o-mini' with no prefix.
+- `EMBEDDING_MODEL`: typically 'text-embedding-3-small' with no prefix.
+- `LLM_MODEL`: typically 'gpt-4o-mini' with no prefix.
 
 ### 3. Test Setup
 
