@@ -42,7 +42,7 @@ python test_embedding.py
 You will see something like while succeeded:
 
 ```
-✅Congratulations! Embedding created successfully."
+✅Congratulations! Embedding created successfully.
 ```
 
 ```bash
