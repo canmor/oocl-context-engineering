@@ -1,5 +1,8 @@
 from llm import build_chat_model
 
-model = build_chat_model(temperature=0.0)
-query = input("Please enter your question: ")
-model.invoke(query).pretty_print()
+def query(prompt: str):
+    model = build_chat_model(temperature=0.0)
+    return model.invoke(prompt)
+
+if __name__ == "__main__":
+    query(input("Please enter your question: ")).pretty_print()
