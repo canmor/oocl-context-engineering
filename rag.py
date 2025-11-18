@@ -20,3 +20,8 @@ class RAG:
         ])
         prompt = prompt_template.format_messages(messages=question, context=self.context)
         return chat(prompt=prompt)
+
+
+if __name__ == "__main__":
+    rag = RAG(context="")
+    rag.query(input("Please enter your question: ")).pretty_print()
