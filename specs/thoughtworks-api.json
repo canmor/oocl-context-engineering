@@ -1,0 +1,121 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Thoughtworks 认证中心 API",
+    "version": "1.0.0",
+    "description": "An API that synchronously renders a graduation/completion certificate image (\"纪念证书\"). The API accepts structured data and returns the rendered image directly in the HTTP response. This spec intentionally keeps the contract minimal so it can be integrated as a third-party service in AI workflows."
+  },
+  "servers": [
+    { "url": "https://api.thoughtworks.com" }
+  ],
+  "tags": [
+    { "name": "certificates", "description": "Synchronous image rendering for completion certificates" },
+    { "name": "health", "description": "Health checks" }
+  ],
+  "paths": {
+    "/certificates": {
+      "post": {
+        "tags": ["certificates"],
+        "summary": "Synchronously render a completion certificate image",
+        "operationId": "renderCertificate",
+        "security": [{ "apiKeyAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CertificateRenderRequest" },
+              "examples": {
+                "basic": {
+                  "summary": "Minimal Chinese example",
+                  "value": {
+                    "participantName": "张三",
+                    "programName": "OOCL AI4SDLC 工作坊",
+                    "completionDate": "2025-11-12",
+                    "locale": "zh-CN"
+                  }
+                },
+                "withTemplate": {
+                  "summary": "English example",
+                  "value": {
+                    "participantName": "Alice Lee",
+                    "programName": "OOCL AI4SDLC Workshop",
+                    "completionDate": "2025-11-12",
+                    "locale": "en-US"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Rendered certificate returned as binary stream.",
+            "content": {
+              "image/png": {
+                "schema": { "type": "string", "format": "binary" }
+              }
+            }
+          },
+          "400": { "description": "Bad request (e.g., invalid field values)" },
+          "401": { "description": "Unauthorized (missing/invalid API key)" },
+          "422": { "description": "Unprocessable (template not found, unsupported locale, etc.)" },
+          "500": { "description": "Server error while rendering" }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": ["health"],
+        "summary": "Health probe",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "Service is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "ok" },
+                    "uptimeSec": { "type": "number", "format": "float" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key",
+        "description": "Supply your API key in this header"
+      }
+    },
+    "schemas": {
+      "CertificateRenderRequest": {
+        "type": "object",
+        "required": [
+          "participantName",
+          "programName",
+          "completionDate"
+        ],
+        "properties": {
+          "participantName": { "type": "string", "description": "Learner's name to appear on the certificate" },
+          "programName": { "type": "string", "description": "Program/workshop/bootcamp name" },
+          "completionDate": { "type": "string", "format": "date", "description": "ISO date when the program was completed" },
+          "locale": { "type": "string", "description": "Locale for labels/typography", "enum": ["zh-CN", "en-US", "zh-HK"] },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": { "type": "string" },
+            "description": "Optional arbitrary metadata to embed or log"
+          }
+        }
+      }
+    }
+  }
+}
